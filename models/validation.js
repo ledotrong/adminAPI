@@ -14,7 +14,6 @@ const registerValidation = data => {
       .min(6),
     picture: Joi.string(),
     role: Joi.string().required(),
-    skills: Joi.array().required(),
     address: Joi.string().required()
   };
 
@@ -49,7 +48,6 @@ const updateValidation = data => {
       .min(6),
     picture: Joi.string(),
     role: Joi.string().required(),
-    skills: Joi.array().required(),
     address: Joi.string().required()
   };
 
