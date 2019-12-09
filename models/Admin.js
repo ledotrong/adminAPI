@@ -23,17 +23,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: 'https://image.flaticon.com/icons/svg/145/145846.svg'
   },
-  skills: {
-    type: Array,
-    required: true,
-    default: []
-  },
   role: {
     type: String,
     required: true
   },
   address: {
-    type: Object,
+    type: String,
     required: true,
     min: 10
   },
@@ -43,4 +38,4 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Admin', userSchema);

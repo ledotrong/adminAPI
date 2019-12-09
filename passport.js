@@ -1,7 +1,7 @@
 const passport = require('passport');
 const passwordJWT = require('passport-jwt');
 const ExtractJWT = passwordJWT.ExtractJwt;
-const User = require('./models/User');
+const Admin = require('./models/Admin');
 const bcrypt = require('bcryptjs');
 const LocalStrategy = require('passport-local').Strategy;
 const JWTStrategy = passwordJWT.Strategy;
@@ -16,7 +16,9 @@ passport.use(
     },
     async (email, password, cb) => {
       try {
-        const user = await User.findOne({ email });
+        const user = await Admin.findOne({ email });
+        console.log(user.role);
+
         if (!user) {
           return cb(null, false, { message: 'Incorrect email or password.' });
         }
@@ -26,7 +28,11 @@ passport.use(
           return cb(null, false, {
             message: 'Incorrect email or password.'
           });
-        else
+        else if (user.role !== 'admin' && user.role !== 'master') {
+          return cb(null, false, {
+            message: 'Permittion denied'
+          });
+        } else
           return cb(null, user, {
             message: 'Logged In Successfully'
           });
@@ -45,11 +51,14 @@ passport.use(
     },
     async (jwtPayload, cb) => {
       try {
-        const user = await User.findById(jwtPayload.userID);
+        const user = await Admin.findById(jwtPayload.userID);
 
         if (!user) {
           return cb(null, false);
-        } else {
+        } else if (
+          jwtPayload.role === 'admin' ||
+          jwtPayload.role === 'master'
+        ) {
           return cb(null, user);
         }
       } catch (err) {
