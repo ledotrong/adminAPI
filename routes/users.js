@@ -8,7 +8,7 @@ const User = require('../models/User');
 /* GET users listing. */
 
 router.get('/', function(req, res) {
-  res.json({ message: 'Authorized' });
+  res.json({ message: 'Authorized', access: true });
 });
 
 router.get('/users', userController.users);
