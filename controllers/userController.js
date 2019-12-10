@@ -2,11 +2,14 @@ const User = require('../models/User');
 
 exports.users = async (req, res) => {
   await User.find({}, (err, users) => {
-    console.log(users);
-    const userData = users.forEach(user => {
-      delete user.password;
-      delete user.__v;
+    let userData = users;
+    userData.forEach(user => {
+      user.password = undefined;
+      user.__v = undefined;
+
+      console.log(user);
     });
+
     res.json(userData);
   });
 };
