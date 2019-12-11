@@ -72,3 +72,15 @@ exports.updateSkill = async (req, res) => {
     res.status(400).json(err);
   }
 };
+
+exports.deleteSkill = async (req, res) => {
+  try {
+    await Skill.updateOne({ _id: req.body.key }, { $set: { isDeleted: true } });
+
+    await Skill.find({}, (err, skills) => {
+      res.json(skills);
+    });
+  } catch (err) {
+    res.status(400).json(err);
+  }
+};
