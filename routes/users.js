@@ -13,6 +13,10 @@ router.get('/', function(req, res) {
 
 router.get('/users', userController.users);
 
+router.get('/skills', userController.skills);
+
+router.post('/skill', userController.postSkill);
+
 router.patch('/ban-user/:id', userController.banUser);
 
 router.patch('/update', authController.update);

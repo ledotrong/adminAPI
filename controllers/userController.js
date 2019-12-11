@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Skill = require('../models/Skill');
 
 exports.users = async (req, res) => {
   await User.find({}, (err, users) => {
@@ -30,5 +31,24 @@ exports.banUser = async (req, res) => {
     res.json(user2.status);
   } catch (err) {
     res.status(400).json(err);
+  }
+};
+
+exports.skills = async (req, res) => {
+  await Skill.find({}, (err, skills) => {
+    res.json(skills);
+  });
+};
+
+exports.postSkill = async (req, res) => {
+  const newSkill = new Skill({
+    name: req.body.name
+  });
+
+  try {
+    const skill = await newSkill.save();
+    res.json(skill);
+  } catch (err) {
+    res.status(400).json(err.message);
   }
 };
