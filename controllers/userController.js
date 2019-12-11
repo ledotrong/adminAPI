@@ -27,7 +27,7 @@ exports.banUser = async (req, res) => {
 
     const user2 = await User.findById(req.params.id);
 
-    res.json('successfully');
+    res.json(user2.status);
   } catch (err) {
     res.status(400).json(err);
   }
