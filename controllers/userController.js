@@ -13,3 +13,22 @@ exports.users = async (req, res) => {
     res.json(userData);
   });
 };
+
+exports.banUser = async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (user.status !== 'banned') user.status = 'banned';
+  else user.status = 'active';
+
+  try {
+    const updatedUser = await User.updateOne(
+      { _id: req.params.id },
+      { $set: { status: user.status } }
+    );
+
+    const user2 = await User.findById(req.params.id);
+
+    res.json('successfully');
+  } catch (err) {
+    res.status(400).json(err);
+  }
+};

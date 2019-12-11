@@ -13,6 +13,8 @@ router.get('/', function(req, res) {
 
 router.get('/users', userController.users);
 
+router.patch('/ban-user/:id', userController.banUser);
+
 router.patch('/update', authController.update);
 
 module.exports = router;
