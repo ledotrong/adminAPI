@@ -41,13 +41,18 @@ exports.skills = async (req, res) => {
 };
 
 exports.postSkill = async (req, res) => {
+  const skillCheck = await Skill.findOne({ email: req.body.name });
+  if (skillCheck) return res.status(400).json('Skill already exists');
+
   const newSkill = new Skill({
     name: req.body.name
   });
 
   try {
     const skill = await newSkill.save();
-    res.json(skill);
+    await Skill.find({}, (err, skills) => {
+      res.json(skills);
+    });
   } catch (err) {
     res.status(400).json(err.message);
   }
