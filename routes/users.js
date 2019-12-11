@@ -17,6 +17,8 @@ router.get('/skills', userController.skills);
 
 router.post('/skill', userController.postSkill);
 
+router.patch('/skill/update', userController.updateSkill);
+
 router.patch('/ban-user/:id', userController.banUser);
 
 router.patch('/update', authController.update);

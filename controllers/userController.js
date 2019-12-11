@@ -49,11 +49,26 @@ exports.postSkill = async (req, res) => {
   });
 
   try {
-    const skill = await newSkill.save();
+    await newSkill.save();
     await Skill.find({}, (err, skills) => {
       res.json(skills);
     });
   } catch (err) {
     res.status(400).json(err.message);
+  }
+};
+
+exports.updateSkill = async (req, res) => {
+  try {
+    await Skill.updateOne(
+      { _id: req.body.key },
+      { $set: { name: req.body.name } }
+    );
+
+    await Skill.find({}, (err, skills) => {
+      res.json(skills);
+    });
+  } catch (err) {
+    res.status(400).json(err);
   }
 };
