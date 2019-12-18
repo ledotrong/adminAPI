@@ -13,6 +13,8 @@ router.get('/', function(req, res) {
 
 router.get('/users', userController.users);
 
+router.get('/admin', userController.admin);
+
 router.get('/skills', userController.skills);
 
 router.post('/skill', userController.postSkill);

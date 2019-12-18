@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Admin = require('../models/Admin');
 const Skill = require('../models/Skill');
 
 exports.users = async (req, res) => {
@@ -7,12 +8,26 @@ exports.users = async (req, res) => {
     userData.forEach(user => {
       user.password = undefined;
       user.__v = undefined;
-
-      console.log(user);
     });
 
     res.json(userData);
   });
+};
+
+exports.admin = async (req, res) => {
+  if (req.user.role === 'master') {
+    await Admin.find({}, (err, users) => {
+      let adminData = users;
+      adminData.forEach(admin => {
+        admin.password = undefined;
+        admin.__v = undefined;
+      });
+
+      res.json(adminData);
+    });
+  } else {
+    res.json({ message: 'Permission denied', error: true });
+  }
 };
 
 exports.banUser = async (req, res) => {
