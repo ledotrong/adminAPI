@@ -26,7 +26,8 @@ exports.register = async (req, res) => {
     password: hashedPassword,
     skills: req.body.skills,
     role: req.body.role,
-    address: req.body.address
+    address: req.body.address,
+    picture: req.body.picture
   });
 
   try {
