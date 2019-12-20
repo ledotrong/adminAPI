@@ -89,7 +89,8 @@ exports.update = async (req, res) => {
     name: req.body.name,
     email: req.body.email,
     password: hashedPassword,
-    picture: req.body.picture
+    picture: req.body.picture,
+    address: req.body.address
   };
 
   try {
