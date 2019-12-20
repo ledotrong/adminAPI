@@ -67,7 +67,6 @@ exports.login = async (req, res) => {
           name: user.name,
           role: user.role,
           picture: user.picture,
-          skills: user.skills,
           address: user.address
         },
         token
@@ -87,6 +86,7 @@ exports.update = async (req, res) => {
 
   const newUser = {
     name: req.body.name,
+    role: req.body.role,
     email: req.body.email,
     password: hashedPassword,
     picture: req.body.picture,
