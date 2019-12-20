@@ -56,9 +56,6 @@ exports.skills = async (req, res) => {
 };
 
 exports.postSkill = async (req, res) => {
-  const skillCheck = await Skill.findOne({ name: req.body.name });
-  if (skillCheck) return res.status(400).json('Skill already exists');
-
   const newSkill = new Skill({
     name: req.body.name
   });
