@@ -27,4 +27,6 @@ router.patch('/ban-user/:id', userController.banUser);
 
 router.patch('/update', authController.update);
 
+router.patch('/updateUser', userController.updateUser);
+
 module.exports = router;

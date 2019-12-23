@@ -36,6 +36,9 @@ const loginValidation = data => {
 
 const updateValidation = data => {
   const schema = {
+    _id: Joi.string()
+      .required()
+      .min(6),
     name: Joi.string()
       .required()
       .min(6),

@@ -1,6 +1,10 @@
 const User = require('../models/User');
 const Admin = require('../models/Admin');
 const Skill = require('../models/Skill');
+const bcrypt = require('bcryptjs');
+const {
+  updateValidation
+} = require('../models/validation');
 
 exports.users = async (req, res) => {
   await User.find({}, (err, users) => {
@@ -92,6 +96,34 @@ exports.deleteSkill = async (req, res) => {
     await Skill.find({}, (err, skills) => {
       res.json(skills);
     });
+  } catch (err) {
+    res.status(400).json(err);
+  }
+};
+
+exports.updateUser = async (req, res) => {
+  const { error } = updateValidation(req.body);
+  if (error) return res.status(400).json(error.details[0].message);
+
+  // Ma hoa mat khau
+  const salt = await bcrypt.genSalt();
+  const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
+  const newUser = {
+    name: req.body.name,
+    role: req.body.role,
+    email: req.body.email,
+    password: hashedPassword,
+    picture: req.body.picture,
+    address: req.body.address
+  };
+
+  try {
+    const updatedUser = await Admin.updateOne(
+      { _id: req.body._id },
+      { $set: newUser }
+    );
+    res.json({updated: true});
   } catch (err) {
     res.status(400).json(err);
   }
