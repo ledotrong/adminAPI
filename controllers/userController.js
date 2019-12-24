@@ -103,10 +103,6 @@ exports.updateUser = async (req, res) => {
   const { error } = updateValidation(req.body);
   if (error) return res.status(400).json(error.details[0].message);
 
-  // Kiem tra email bi trung?
-  const userCheck = await Admin.findOne({ email: req.body.email });
-  if (userCheck) return res.status(400).json('Email already exists');
-
   // Ma hoa mat khau
   const salt = await bcrypt.genSalt();
   const hashedPassword = await bcrypt.hash(req.body.password, salt);
