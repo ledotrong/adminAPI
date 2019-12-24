@@ -2,9 +2,7 @@ const User = require('../models/User');
 const Admin = require('../models/Admin');
 const Skill = require('../models/Skill');
 const bcrypt = require('bcryptjs');
-const {
-  updateValidation
-} = require('../models/validation');
+const { updateValidation } = require('../models/validation');
 
 exports.users = async (req, res) => {
   await User.find({}, (err, users) => {
@@ -105,6 +103,10 @@ exports.updateUser = async (req, res) => {
   const { error } = updateValidation(req.body);
   if (error) return res.status(400).json(error.details[0].message);
 
+  // Kiem tra email bi trung?
+  const userCheck = await Admin.findOne({ email: req.body.email });
+  if (userCheck) return res.status(400).json('Email already exists');
+
   // Ma hoa mat khau
   const salt = await bcrypt.genSalt();
   const hashedPassword = await bcrypt.hash(req.body.password, salt);
@@ -123,7 +125,18 @@ exports.updateUser = async (req, res) => {
       { _id: req.body._id },
       { $set: newUser }
     );
-    res.json({updated: true});
+    res.json({ updated: true });
+  } catch (err) {
+    res.status(400).json(err);
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  const userCheck = await Admin.findOne({ _id: req.body._id });
+  try {
+    await Admin.deleteOne({ _id: req.body._id }, () => {
+      res.json({ deleted: true });
+    });
   } catch (err) {
     res.status(400).json(err);
   }
