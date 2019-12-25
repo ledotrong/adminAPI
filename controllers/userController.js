@@ -194,18 +194,13 @@ exports.contracts = async (req, res) => {
 exports.contract = async (req, res) => {
   try {
     const id = req.params.id;
-    let contract, student, tutor;
-    await Contract.find({ _id: id }, (err, data) => {
-      contract = data[0];
-    });
-    await User.find({ _id: contract.studentID }, (err, data) => {
-      student = data[0];
-    });
-    await User.find({ _id: contract.tutorID }, (err, data) => {
-      tutor = data[0];
-    });
+    const contract = await Contract.findOne({ _id: id });
+    const student = await User.findOne({ _id: contract.studentID });
+    const tutor = await User.findOne({ _id: contract.tutorID });
+
     res.json({ contract, student, tutor });
   } catch (err) {
     res.status(400).json(err);
+    console.log(err);
   }
 };
