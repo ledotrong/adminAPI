@@ -2,6 +2,7 @@ const User = require('../models/User');
 const Admin = require('../models/Admin');
 const Skill = require('../models/Skill');
 const Contract = require('../models/Contract');
+const Message = require('../models/Message');
 const bcrypt = require('bcryptjs');
 const { updateValidation } = require('../models/validation');
 const url = require('url');
@@ -197,8 +198,11 @@ exports.contract = async (req, res) => {
     const contract = await Contract.findOne({ _id: id });
     const student = await User.findOne({ _id: contract.studentID });
     const tutor = await User.findOne({ _id: contract.tutorID });
+    const messages = await Message.findOne({
+      users: [contract.studentID, contract.tutorID]
+    });
 
-    res.json({ contract, student, tutor });
+    res.json({ contract, student, tutor, messages });
   } catch (err) {
     res.status(400).json(err);
     console.log(err);
