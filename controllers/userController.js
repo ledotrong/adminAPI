@@ -208,3 +208,21 @@ exports.contract = async (req, res) => {
     console.log(err);
   }
 };
+
+exports.refundAction = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const contract = await Contract.findOne({ _id: id });
+    let updateStatus = 'complain';
+    if (contract.currentStatus === 'complain') updateStatus = 'refund';
+    await Contract.updateOne(
+      { _id: req.params.id },
+      { $set: { currentStatus: updateStatus } }
+    );
+
+    res.json({ updated: true, status: updateStatus });
+  } catch (err) {
+    res.status(400).json(err);
+    console.log(err);
+  }
+};

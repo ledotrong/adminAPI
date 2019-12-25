@@ -29,6 +29,8 @@ router.patch('/skill/update', userController.updateSkill);
 
 router.patch('/skill/delete', userController.deleteSkill);
 
+router.patch('/contracts/:id/update', userController.refundAction);
+
 router.patch('/ban-user/:id', userController.banUser);
 
 router.patch('/update', authController.update);
