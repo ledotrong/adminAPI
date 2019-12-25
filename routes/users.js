@@ -21,6 +21,8 @@ router.get('/revenue', userController.revenue);
 
 router.get('/contracts', userController.contracts);
 
+router.get('/contracts/:id', userController.contract);
+
 router.post('/skill', userController.postSkill);
 
 router.patch('/skill/update', userController.updateSkill);
