@@ -158,11 +158,16 @@ exports.revenue = async (req, res) => {
   }
   console.log(startDate);
   try {
-    await Contract.find({}, (err, skills) => {
+    await Contract.find({}, (err, contracts) => {
       let revenue = [];
-      skills.forEach(skill => {
-        const date = new Date(skill.contractCreationDate).toLocaleDateString();
-        revenue.push({ price: skill.price, date: skill.contractCreationDate });
+      contracts.forEach(contract => {
+        const date = new Date(
+          contract.contractCreationDate
+        ).toLocaleDateString();
+        revenue.push({
+          price: contract.price,
+          date: contract.contractCreationDate
+        });
       });
       if (query.range)
         revenue = revenue.filter(
@@ -170,6 +175,16 @@ exports.revenue = async (req, res) => {
         );
       console.log(revenue);
       res.json(revenue);
+    });
+  } catch (err) {
+    res.status(400).json(err);
+  }
+};
+
+exports.contracts = async (req, res) => {
+  try {
+    await Contract.find({}, (err, contracts) => {
+      res.json(contracts);
     });
   } catch (err) {
     res.status(400).json(err);
