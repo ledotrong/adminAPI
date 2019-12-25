@@ -17,6 +17,8 @@ router.get('/admin', userController.admin);
 
 router.get('/skills', userController.skills);
 
+router.get('/revenue', userController.revenue);
+
 router.post('/skill', userController.postSkill);
 
 router.patch('/skill/update', userController.updateSkill);

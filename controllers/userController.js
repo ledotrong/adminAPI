@@ -1,8 +1,10 @@
 const User = require('../models/User');
 const Admin = require('../models/Admin');
 const Skill = require('../models/Skill');
+const Contract = require('../models/Contract');
 const bcrypt = require('bcryptjs');
 const { updateValidation } = require('../models/validation');
+const url = require('url');
 
 exports.users = async (req, res) => {
   await User.find({}, (err, users) => {
@@ -132,6 +134,42 @@ exports.deleteUser = async (req, res) => {
   try {
     await Admin.deleteOne({ _id: req.body._id }, () => {
       res.json({ deleted: true });
+    });
+  } catch (err) {
+    res.status(400).json(err);
+  }
+};
+
+exports.revenue = async (req, res) => {
+  const query = url.parse(req.url, true).query;
+  let startDate = null;
+  let endDate = null;
+  if (query.range) {
+    if (query.range === 'week') {
+      endDate = new Date();
+      startDate = new Date();
+      startDate.setDate(endDate.getDate() - 7);
+    }
+    if (query.range === 'month') {
+      endDate = new Date();
+      startDate = new Date();
+      startDate.setDate(endDate.getDate() - 30);
+    }
+  }
+  console.log(startDate);
+  try {
+    await Contract.find({}, (err, skills) => {
+      let revenue = [];
+      skills.forEach(skill => {
+        const date = new Date(skill.contractCreationDate).toLocaleDateString();
+        revenue.push({ price: skill.price, date: skill.contractCreationDate });
+      });
+      if (query.range)
+        revenue = revenue.filter(
+          item => item.date >= startDate && item.date <= endDate
+        );
+      console.log(revenue);
+      res.json(revenue);
     });
   } catch (err) {
     res.status(400).json(err);
